@@ -1,0 +1,36 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - 'v*' # ignora tags se caírem aqui
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-pr:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Criar PR automaticamente
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Pega a primeira linha da mensagem do último commit para usar como título do PR
+          TITLE=$(git log -1 --pretty=%B | head -n 1)
+          
+          echo "Verificando se já existe um PR para a branch ${{ github.ref_name }}..."
+          
+          # Tenta criar o PR. Se já existir, o gh cli falha, então usamos || true para não quebrar o workflow
+          gh pr create \
+            --base main \
+            --head "${{ github.ref_name }}" \
+            --title "$TITLE" \
+            --body "PR criado automaticamente a partir do push na branch \`${{ github.ref_name }}\`." \
+            || echo "PR já existente ou não foi possível criar."

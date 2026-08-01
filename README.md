@@ -97,21 +97,27 @@ O projeto possui pipelines automatizados que rodam no plano **gratuito** do GitH
 | Workflow | Trigger | O que faz |
 |---|---|---|
 | **CI** | Push em `main` + PRs | Valida `manifest.json` + lint do JavaScript |
+| **Version Bump** | Push em `main` | Analisa commits (`fix/feat`), atualiza `manifest.json` e cria tag automática |
 | **Release** | Tags `v*` | Gera `.zip` da extensão + cria GitHub Release |
 
 > O CI roda automaticamente em cada Pull Request. Certifique-se de que os checks passaram antes de solicitar review.
 
-### 🚀 Releases
+### 🚀 Releases (Automatizadas)
 
-Para criar uma nova release:
+As releases agora são **100% automatizadas** pelo GitHub Actions.
 
-```bash
-git checkout main && git pull
-git tag v1.3.0
-git push --tags
-```
+Para criar uma nova release, você só precisa fazer o merge de um Pull Request na `main` contendo commits seguindo o padrão do **Conventional Commits**:
 
-O workflow de Release irá automaticamente:
+- Commits `fix:` → Bump **patch** (ex: 1.0.0 → 1.0.1)
+- Commits `feat:` → Bump **minor** (ex: 1.0.0 → 1.1.0)
+- Commits com `BREAKING CHANGE:` → Bump **major** (ex: 1.0.0 → 2.0.0)
+
+O workflow `Version Bump` irá automaticamente:
+1. Atualizar a versão no `manifest.json`
+2. Fazer o commit dessa alteração na `main`
+3. Criar uma nova tag (ex: `v1.3.0`)
+
+A criação da tag vai, por sua vez, disparar o workflow de **Release**, que irá:
 1. Empacotar a extensão em um `.zip`
 2. Criar uma **GitHub Release** com release notes geradas automaticamente
 

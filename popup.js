@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleInput = document.getElementById('toggleInput');
   const reloadNotice = document.getElementById('reloadNotice');
   const reloadLink = document.getElementById('reloadLink');
+  const versionFooter = document.getElementById('versionFooter');
+
+  // Load version dynamically from manifest
+  const manifest = chrome.runtime.getManifest();
+  if (manifest && manifest.version) {
+    versionFooter.textContent = `v${manifest.version}`;
+  }
 
   // Read state directly from storage (no dependency on background)
   const result = await chrome.storage.local.get('enabled');
