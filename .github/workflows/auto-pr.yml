@@ -20,7 +20,7 @@ jobs:
 
       - name: Criar PR automaticamente
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           # Pega a primeira linha da mensagem do último commit para usar como título do PR
           TITLE=$(git log -1 --pretty=%B | head -n 1)
