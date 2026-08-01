@@ -64,7 +64,7 @@ function setEnabled(enabled) {
 }
 
 // Listen for messages from background (when background sends via tabs.sendMessage)
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
   if (message.type === 'setEnabled') {
     setEnabled(message.enabled);
   }

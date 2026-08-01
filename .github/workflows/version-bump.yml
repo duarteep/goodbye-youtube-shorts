@@ -1,0 +1,112 @@
+name: Version Bump
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    name: Bump Version & Tag
+    runs-on: ubuntu-latest
+
+    # Skip if the push was made by this workflow (prevents infinite loop)
+    if: "!contains(github.event.head_commit.message, 'chore: bump version')"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed to analyze commits since last tag
+
+      - name: Get latest tag
+        id: latest_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Latest tag: $TAG"
+
+      - name: Analyze commits for bump type
+        id: bump
+        run: |
+          LATEST_TAG="${{ steps.latest_tag.outputs.tag }}"
+
+          if [ -z "$LATEST_TAG" ]; then
+            # No tags yet, analyze all commits
+            COMMITS=$(git log --pretty=format:"%s" HEAD)
+          else
+            # Analyze commits since last tag
+            COMMITS=$(git log --pretty=format:"%s" "$LATEST_TAG"..HEAD)
+          fi
+
+          echo "Commits to analyze:"
+          echo "$COMMITS"
+
+          BUMP=""
+
+          # Check for breaking changes (major)
+          if echo "$COMMITS" | grep -qE '^[a-z]+(\(.+\))?!:|BREAKING CHANGE'; then
+            BUMP="major"
+          # Check for features (minor)
+          elif echo "$COMMITS" | grep -qE '^feat(\(.+\))?:'; then
+            BUMP="minor"
+          # Check for fixes (patch)
+          elif echo "$COMMITS" | grep -qE '^fix(\(.+\))?:'; then
+            BUMP="patch"
+          fi
+
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+          echo "Bump type: ${BUMP:-none}"
+
+      - name: Bump manifest.json version
+        if: steps.bump.outputs.bump != ''
+        id: version
+        run: |
+          BUMP_TYPE="${{ steps.bump.outputs.bump }}"
+          CURRENT=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
+          echo "Current version: $CURRENT"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+
+          case "$BUMP_TYPE" in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+          # Update manifest.json
+          python3 -c "
+          import json
+          with open('manifest.json', 'r') as f:
+              data = json.load(f)
+          data['version'] = '$NEW_VERSION'
+          with open('manifest.json', 'w') as f:
+              json.dump(data, f, indent=2)
+              f.write('\n')
+          "
+
+      - name: Commit and tag
+        if: steps.bump.outputs.bump != ''
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "chore: bump version to $NEW_VERSION"
+          git tag "v$NEW_VERSION"
+          git push origin main --tags

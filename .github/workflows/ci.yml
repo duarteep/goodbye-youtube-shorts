@@ -25,6 +25,5 @@ jobs:
 
       - name: Lint JavaScript
         run: |
-          npx eslint@8 content.js background.js popup.js --no-eslintrc \
-            --env browser,webextensions,es2021 \
-            --rule '{"no-undef":"error","no-unused-vars":"warn"}'
+          npm install globals
+          npx eslint@9 content.js background.js popup.js
