@@ -1,146 +1,147 @@
 # 👋 Goodbye YouTube Shorts
 
-Uma extensão leve para o Chrome que remove completamente os **Shorts** do YouTube — tanto os links na barra lateral quanto as sugestões no feed.
+A lightweight Chrome extension that completely removes **Shorts** from YouTube — both the links in the sidebar and the suggestions in the feed.
 
-## ✨ O que faz
+## ✨ What it does
 
-- **Remove o link "Shorts"** da barra lateral e do mini menu
-- **Remove seções de Shorts** (prateleiras e sugestões) da página inicial
-- **Funciona em tempo real** — monitora mudanças no DOM para garantir que os Shorts permaneçam ocultos durante a navegação
+- **Removes the "Shorts" link** from the sidebar and mini menu
+- **Removes Shorts sections** (shelves and suggestions) from the homepage
+- **Works in real-time** — monitors DOM changes to ensure Shorts stay hidden while browsing
+- **Multi-language support** — the popup automatically translates to English, Portuguese, Spanish, Russian, and Mandarin based on your browser language
 
-## 🛠 Tecnologias
+## 🛠 Technologies
 
 - Manifest V3
-- Content Script com `MutationObserver`
-- JavaScript puro — sem dependências externas
+- Content Script with `MutationObserver`
+- Vanilla JavaScript — no external dependencies
 
-## 📦 Instalação (modo desenvolvedor)
+## 📦 Installation (Developer Mode)
 
-1. Clone o repositório:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/seu-usuario/goodbye-yt-shorts.git
+   git clone https://github.com/your-username/goodbye-yt-shorts.git
    ```
-2. Abra `chrome://extensions/` no navegador
-3. Ative o **Modo do desenvolvedor** (canto superior direito)
-4. Clique em **Carregar sem compactação**
-5. Selecione a pasta `goodbye-yt-shorts-extension`
+2. Open `chrome://extensions/` in your browser
+3. Enable **Developer mode** (top right corner)
+4. Click **Load unpacked**
+5. Select the `goodbye-yt-shorts-extension` folder
 
-## 📂 Estrutura
+## 📂 Structure
 
 ```
 goodbye-yt-shorts-extension/
-├── manifest.json      # Configuração da extensão (Manifest V3)
-├── content.js         # Script principal — remove Shorts do DOM
-├── popup.html         # Interface do popup da extensão
-├── popup.js           # Lógica do popup (status ativo/inativo)
-├── icon16.png         # Ícone 16x16
-├── icon48.png         # Ícone 48x48
-└── icon128.png        # Ícone 128x128
+├── manifest.json      # Extension configuration (Manifest V3)
+├── content.js         # Main script — removes Shorts from the DOM
+├── popup.html         # Extension popup interface
+├── popup.js           # Popup logic (active/inactive status & i18n)
+├── icon16.png         # 16x16 icon
+├── icon48.png         # 48x48 icon
+└── icon128.png        # 128x128 icon
 ```
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Contribuições são muito bem-vindas! Este projeto segue o **GitHub Flow** — um modelo simples e eficiente de trabalho com Git.
+Contributions are very welcome! This project follows the **GitHub Flow** — a simple and efficient Git workflow.
 
 ### 🔀 Gitflow (GitHub Flow)
 
-A branch `main` é a branch principal e deve estar **sempre estável**. Toda mudança entra via **Pull Request**.
+The `main` branch is the primary branch and must **always be stable**. Every change comes in via **Pull Request**.
 
 ```
-main (sempre deployable)
- ├── feature/nova-funcionalidade
- ├── fix/corrige-bug-x
- └── chore/atualiza-readme
+main (always deployable)
+ ├── feature/new-feature
+ ├── fix/fixes-bug-x
+ └── chore/updates-readme
 ```
 
-#### Convenção de branches
+#### Branch convention
 
-| Prefixo | Uso |
+| Prefix | Usage |
 |---|---|
-| `feature/` | Nova funcionalidade |
-| `fix/` | Correção de bug |
-| `chore/` | Manutenção, docs, refatoração |
+| `feature/` | New feature |
+| `fix/` | Bug fix |
+| `chore/` | Maintenance, docs, refactoring |
 
-#### Passo a passo
+#### Step by step
 
-1. **Fork** este repositório
-2. Crie uma **branch** a partir de `main` com o prefixo adequado:
+1. **Fork** this repository
+2. Create a **branch** from `main` with the appropriate prefix:
    ```bash
    git checkout main && git pull
-   git checkout -b feature/minha-feature
+   git checkout -b feature/my-feature
    ```
-3. Faça suas alterações e **commit** seguindo o padrão de mensagens:
+3. Make your changes and **commit** following the message pattern:
    ```bash
-   git commit -m "feat: adiciona minha feature"
+   git commit -m "feat: adds my feature"
    ```
-4. Envie para o seu fork:
+4. Push to your fork:
    ```bash
-   git push -u origin feature/minha-feature
+   git push -u origin feature/my-feature
    ```
-5. Abra um **Pull Request** neste repositório
-6. Aguarde o **CI passar** (validação automática via GitHub Actions)
-7. Após aprovação e merge, a branch pode ser deletada
+5. Open a **Pull Request** in this repository
+6. Wait for **CI to pass** (automatic validation via GitHub Actions)
+7. After approval and merge, the branch can be deleted
 
-#### 📝 Convenção de commits
+#### 📝 Commit convention
 
-| Prefixo | Exemplo |
+| Prefix | Example |
 |---|---|
-| `feat:` | `feat: adiciona modo escuro no popup` |
-| `fix:` | `fix: corrige shorts não sendo ocultados` |
-| `chore:` | `chore: atualiza README` |
-| `refactor:` | `refactor: simplifica lógica do MutationObserver` |
+| `feat:` | `feat: adds dark mode to popup` |
+| `fix:` | `fix: fixes shorts not being hidden` |
+| `chore:` | `chore: updates README` |
+| `refactor:` | `refactor: simplifies MutationObserver logic` |
 
 ### ⚙️ CI/CD (GitHub Actions)
 
-O projeto possui pipelines automatizados que rodam no plano **gratuito** do GitHub Actions:
+The project has automated pipelines that run on the GitHub Actions **free** plan:
 
-| Workflow | Trigger | O que faz |
+| Workflow | Trigger | What it does |
 |---|---|---|
-| **CI** | Push em `main` + PRs | Valida `manifest.json` + lint do JavaScript |
-| **Version Bump** | Push em `main` | Analisa commits (`fix/feat`), atualiza `manifest.json` e cria tag automática |
-| **Release** | Tags `v*` | Gera `.zip` da extensão + cria GitHub Release |
+| **CI** | Push to `main` + PRs | Validates `manifest.json` + JavaScript lint |
+| **Version Bump** | Push to `main` | Analyzes commits (`fix/feat`), updates `manifest.json` and creates tag automatically |
+| **Release** | Tags `v*` | Generates extension `.zip` + creates GitHub Release |
 
-> O CI roda automaticamente em cada Pull Request. Certifique-se de que os checks passaram antes de solicitar review.
+> CI runs automatically on every Pull Request. Make sure checks pass before requesting review.
 
-### 🚀 Releases (Automatizadas)
+### 🚀 Releases (Automated)
 
-As releases agora são **100% automatizadas** pelo GitHub Actions.
+Releases are now **100% automated** by GitHub Actions.
 
-Para criar uma nova release, você só precisa fazer o merge de um Pull Request na `main` contendo commits seguindo o padrão do **Conventional Commits**:
+To create a new release, you just need to merge a Pull Request into `main` containing commits following the **Conventional Commits** pattern:
 
 - Commits `fix:` → Bump **patch** (ex: 1.0.0 → 1.0.1)
 - Commits `feat:` → Bump **minor** (ex: 1.0.0 → 1.1.0)
-- Commits com `BREAKING CHANGE:` → Bump **major** (ex: 1.0.0 → 2.0.0)
+- Commits with `BREAKING CHANGE:` → Bump **major** (ex: 1.0.0 → 2.0.0)
 
-O workflow `Version Bump` irá automaticamente:
-1. Atualizar a versão no `manifest.json`
-2. Fazer o commit dessa alteração na `main`
-3. Criar uma nova tag (ex: `v1.3.0`)
+The `Version Bump` workflow will automatically:
+1. Update version in `manifest.json`
+2. Commit this change to `main`
+3. Create a new tag (ex: `v1.3.0`)
 
-A criação da tag vai, por sua vez, disparar o workflow de **Release**, que irá:
-1. Empacotar a extensão em um `.zip`
-2. Criar uma **GitHub Release** com release notes geradas automaticamente
+Creating the tag will, in turn, trigger the **Release** workflow, which will:
+1. Package the extension into a `.zip`
+2. Create a **GitHub Release** with automatically generated release notes
 
-### 💡 Dicas para contribuir
+### 💡 Tips for contributing
 
-- Mantenha o código simples e sem dependências externas
-- Teste suas alterações carregando a extensão localmente antes de abrir o PR
-- Descreva claramente o que sua alteração faz e por quê
-- Siga a convenção de branches e commits descrita acima
+- Keep the code simple and without external dependencies
+- Test your changes by loading the extension locally before opening a PR
+- Clearly describe what your change does and why
+- Follow the branch and commit convention described above
 
 ## 🐛 Issues
 
-Encontrou um bug ou tem uma sugestão? Abra uma [Issue](../../issues) no GitHub!
+Found a bug or have a suggestion? Open an [Issue](../../issues) on GitHub!
 
-Ao criar uma issue, tente incluir:
+When creating an issue, please try to include:
 
-- **Descrição clara** do problema ou sugestão
-- **Passos para reproduzir** (no caso de bugs)
-- **Versão do navegador** que está usando
-- **Capturas de tela**, se possível
+- **Clear description** of the problem or suggestion
+- **Steps to reproduce** (for bugs)
+- **Browser version** you are using
+- **Screenshots**, if possible
 
-Toda contribuição conta — desde reportar um bug até sugerir uma melhoria. 🙌
+Every contribution counts — from reporting a bug to suggesting an improvement. 🙌
 
-## 📄 Licença
+## 📄 License
 
 MIT
