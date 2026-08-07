@@ -6,79 +6,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const reloadLink = document.getElementById('reloadLink');
   const versionFooter = document.getElementById('versionFooter');
 
-  const translations = {
-    'en': {
-      statusLabel: 'Status',
-      loading: 'Loading...',
-      removeShorts: 'Remove Shorts',
-      reloadNotice: 'Reload the page to apply.',
-      reloadButton: 'Reload',
-      error: 'Error',
-      active: 'Active',
-      off: 'Off',
-      notOnYouTube: 'Not on YouTube'
-    },
-    'pt': {
-      statusLabel: 'Status',
-      loading: 'Carregando...',
-      removeShorts: 'Remover Shorts',
-      reloadNotice: 'Recarregue a página para aplicar.',
-      reloadButton: 'Recarregar',
-      error: 'Erro',
-      active: 'Ativo',
-      off: 'Desligado',
-      notOnYouTube: 'Fora do YouTube'
-    },
-    'ru': {
-      statusLabel: 'Статус',
-      loading: 'Загрузка...',
-      removeShorts: 'Удалить Shorts',
-      reloadNotice: 'Перезагрузите страницу, чтобы применить.',
-      reloadButton: 'Перезагрузить',
-      error: 'Ошибка',
-      active: 'Включено',
-      off: 'Выключено',
-      notOnYouTube: 'Не на YouTube'
-    },
-    'zh': {
-      statusLabel: '状态',
-      loading: '加载中...',
-      removeShorts: '移除 Shorts',
-      reloadNotice: '重新加载页面以应用更改。',
-      reloadButton: '重新加载',
-      error: '错误',
-      active: '已开启',
-      off: '已关闭',
-      notOnYouTube: '不在 YouTube 上'
-    },
-    'es': {
-      statusLabel: 'Estado',
-      loading: 'Cargando...',
-      removeShorts: 'Eliminar Shorts',
-      reloadNotice: 'Vuelve a cargar la página para aplicar.',
-      reloadButton: 'Recargar',
-      error: 'Error',
-      active: 'Activo',
-      off: 'Desactivado',
-      notOnYouTube: 'Fuera de YouTube'
-    }
-  };
-
-  function getLang() {
-    const lang = navigator.language.toLowerCase();
-    if (lang.startsWith('pt')) return 'pt';
-    if (lang.startsWith('ru')) return 'ru';
-    if (lang.startsWith('zh')) return 'zh';
-    if (lang.startsWith('es')) return 'es';
-    return 'en';
+  function getMsg(key) {
+    return chrome.i18n.getMessage(key);
   }
-
-  const t = translations[getLang()];
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (t[key]) {
-      el.textContent = t[key];
+    const msg = getMsg(key);
+    if (msg) {
+      el.textContent = msg;
     }
   });
 
@@ -101,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isYouTube = tab && tab.url && tab.url.includes('youtube.com');
     updateStatusUI(isYouTube, enabled);
   } catch (err) {
-    statusText.textContent = t.error;
+    statusText.textContent = getMsg('error');
   }
 
   // Toggle handler — write directly to storage
@@ -141,13 +77,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (isYouTube && enabled) {
       statusBadge.classList.add('active');
-      statusText.textContent = t.active;
+      statusText.textContent = getMsg('active');
     } else if (isYouTube && !enabled) {
       statusBadge.classList.add('inactive');
-      statusText.textContent = t.off;
+      statusText.textContent = getMsg('off');
     } else {
       statusBadge.classList.add('away');
-      statusText.textContent = t.notOnYouTube;
+      statusText.textContent = getMsg('notOnYouTube');
     }
   }
 });

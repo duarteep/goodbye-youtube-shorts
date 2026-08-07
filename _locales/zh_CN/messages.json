@@ -1,0 +1,13 @@
+{
+  "extensionName": { "message": "Goodbye YouTube Shorts" },
+  "extensionDescription": { "message": "从 YouTube 移除 Shorts 链接和推荐。" },
+  "statusLabel": { "message": "状态" },
+  "loading": { "message": "加载中..." },
+  "removeShorts": { "message": "移除 Shorts" },
+  "reloadNotice": { "message": "重新加载页面以应用更改。" },
+  "reloadButton": { "message": "重新加载" },
+  "error": { "message": "错误" },
+  "active": { "message": "已开启" },
+  "off": { "message": "已关闭" },
+  "notOnYouTube": { "message": "不在 YouTube 上" }
+}
