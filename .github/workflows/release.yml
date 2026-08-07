@@ -24,6 +24,7 @@ jobs:
             background.js \
             popup.js \
             popup.html \
+            _locales/ \
             icon.png \
             icon16.png \
             icon48.png \
