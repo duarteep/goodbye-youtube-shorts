@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Goodbye YouTube Shorts",
+  "name": "__MSG_extensionName__",
   "version": "1.5.0",
-  "description": "Remove Shorts links and suggestions from YouTube.",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "permissions": [
     "scripting",
     "activeTab",

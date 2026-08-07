@@ -1,0 +1,13 @@
+{
+  "extensionName": { "message": "Goodbye YouTube Shorts" },
+  "extensionDescription": { "message": "Удалите ссылки и рекомендации Shorts из YouTube." },
+  "statusLabel": { "message": "Статус" },
+  "loading": { "message": "Загрузка..." },
+  "removeShorts": { "message": "Удалить Shorts" },
+  "reloadNotice": { "message": "Перезагрузите страницу, чтобы применить." },
+  "reloadButton": { "message": "Перезагрузить" },
+  "error": { "message": "Ошибка" },
+  "active": { "message": "Включено" },
+  "off": { "message": "Выключено" },
+  "notOnYouTube": { "message": "Не на YouTube" }
+}

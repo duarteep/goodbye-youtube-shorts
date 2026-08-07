@@ -1,0 +1,13 @@
+{
+  "extensionName": { "message": "Goodbye YouTube Shorts" },
+  "extensionDescription": { "message": "Remova os links e sugestões de Shorts do YouTube." },
+  "statusLabel": { "message": "Status" },
+  "loading": { "message": "Carregando..." },
+  "removeShorts": { "message": "Remover Shorts" },
+  "reloadNotice": { "message": "Recarregue a página para aplicar." },
+  "reloadButton": { "message": "Recarregar" },
+  "error": { "message": "Erro" },
+  "active": { "message": "Ativo" },
+  "off": { "message": "Desligado" },
+  "notOnYouTube": { "message": "Fora do YouTube" }
+}
