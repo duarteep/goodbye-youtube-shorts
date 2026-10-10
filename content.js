@@ -1,6 +1,53 @@
 let isEnabled = true;
 let observer = null;
 
+// Contagem de Shorts removidos (acumulada em memória e gravada com debounce)
+const FLUSH_DELAY_MS = 1000;
+let pendingCount = 0;
+let flushTimer = null;
+
+function flushCount() {
+  if (flushTimer) {
+    clearTimeout(flushTimer);
+    flushTimer = null;
+  }
+  if (pendingCount === 0) return;
+  const delta = pendingCount;
+  pendingCount = 0;
+  try {
+    chrome.storage.local.get(['totalBlocked', 'tripBlocked'], (result) => {
+      if (chrome.runtime.lastError) return;
+      chrome.storage.local.set({
+        totalBlocked: (result.totalBlocked || 0) + delta,
+        tripBlocked: (result.tripBlocked || 0) + delta
+      });
+    });
+  } catch (e) {
+    // Contexto da extensão invalidado (ex.: extensão atualizada); ignora
+  }
+}
+
+function addToCount(n) {
+  if (n <= 0) return;
+  pendingCount += n;
+  if (!flushTimer) {
+    flushTimer = setTimeout(flushCount, FLUSH_DELAY_MS);
+  }
+}
+
+// Quantos Shorts um elemento removido representa
+function countShortsIn(item) {
+  const tag = item.tagName.toLowerCase();
+  if (tag === 'ytd-reel-item-renderer') return 1;
+  const nested = item.querySelectorAll('ytd-reel-item-renderer, ytm-shorts-lockup-view-model').length;
+  if (tag === 'ytd-reel-shelf-renderer') return Math.max(1, nested);
+  return nested; // ytd-rich-section-renderer sem Shorts dentro não conta
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushCount();
+});
+
 // Remove Shorts link from sidebar
 function removeShortsSidebar() {
   // Remove links para Shorts
@@ -30,7 +77,11 @@ function removeShortsSidebar() {
 function removeShortsSuggestions() {
   const items = document.querySelectorAll('ytd-rich-section-renderer, ytd-reel-shelf-renderer, ytd-reel-item-renderer');
   items.forEach(item => {
+    // Já removido junto com um contêiner pai (evita contar duas vezes)
+    if (!item.isConnected) return;
+    const count = countShortsIn(item);
     item.remove();
+    addToCount(count);
   });
 }
 

@@ -31,5 +31,11 @@
   },
   "notOnYouTube": {
     "message": "Fuera de YouTube"
-  }
+  },
+  "totalBlockedLabel": { "message": "Shorts bloqueados" },
+  "tripBlockedLabel": { "message": "Parcial" },
+  "resetTrip": { "message": "Reiniciar" },
+  "reviewPrompt": { "message": "¿Te gusta la extensión? ¡Una reseña de 5 estrellas ayuda mucho!" },
+  "reviewCta": { "message": "Valorar en Chrome Web Store" },
+  "reviewDismiss": { "message": "Descartar" }
 }

@@ -9,5 +9,11 @@
   "error": { "message": "Erro" },
   "active": { "message": "Ativo" },
   "off": { "message": "Desligado" },
-  "notOnYouTube": { "message": "Fora do YouTube" }
+  "notOnYouTube": { "message": "Fora do YouTube" },
+  "totalBlockedLabel": { "message": "Shorts bloqueados" },
+  "tripBlockedLabel": { "message": "Parcial" },
+  "resetTrip": { "message": "Zerar" },
+  "reviewPrompt": { "message": "Curtindo a extensão? Uma avaliação de 5 estrelas ajuda muito!" },
+  "reviewCta": { "message": "Avaliar na Chrome Web Store" },
+  "reviewDismiss": { "message": "Dispensar" }
 }

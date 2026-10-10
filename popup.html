@@ -241,6 +241,130 @@
       font-size: 10px;
       color: #4a5568;
     }
+
+    /* Counter (odometer) */
+    .counter-card {
+      background: #16213e;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid #0f3460;
+      margin-top: 10px;
+    }
+
+    .counter-label {
+      display: block;
+      font-size: 12px;
+      color: #8892b0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .odometer {
+      display: flex;
+      gap: 3px;
+      justify-content: center;
+    }
+
+    .odometer .digit {
+      min-width: 22px;
+      padding: 6px 0;
+      text-align: center;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(180deg, #0d1326 0%, #1b2547 50%, #0d1326 100%);
+      border: 1px solid #0f3460;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    .trip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #0f3460;
+    }
+
+    .trip-label {
+      font-size: 11px;
+      color: #8892b0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .trip-value {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: #00c853;
+      margin: 0 8px 0 6px;
+    }
+
+    .trip-reset {
+      background: transparent;
+      color: #8892b0;
+      border: 1px solid #3a3a5a;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .trip-reset:hover {
+      color: #ffffff;
+      border-color: #ff4444;
+    }
+
+    /* Review prompt */
+    .review-card {
+      display: none;
+      margin-top: 10px;
+      background: rgba(0, 200, 83, 0.08);
+      border: 1px solid rgba(0, 200, 83, 0.25);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #ccc;
+      line-height: 1.4;
+    }
+
+    .review-card.visible {
+      display: block;
+    }
+
+    .review-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .review-actions a {
+      color: #00c853;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .review-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .review-dismiss {
+      background: transparent;
+      border: none;
+      color: #8892b0;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .review-dismiss:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
@@ -261,6 +385,18 @@
     </div>
   </div>
 
+  <div class="counter-card">
+    <span class="counter-label" data-i18n="totalBlockedLabel">Shorts blocked</span>
+    <div class="odometer" id="odometer" aria-live="polite"></div>
+    <div class="trip-row">
+      <span>
+        <span class="trip-label" data-i18n="tripBlockedLabel">Session</span>
+        <span class="trip-value" id="tripValue">0</span>
+      </span>
+      <button type="button" class="trip-reset" id="tripReset" data-i18n="resetTrip">Reset</button>
+    </div>
+  </div>
+
   <div class="toggle-card">
     <div class="toggle-row">
       <span class="toggle-label" data-i18n="removeShorts">Remover Shorts</span>
@@ -274,6 +410,14 @@
   <div class="reload-notice" id="reloadNotice">
     <span class="reload-icon">⚠️</span>
     <span><span data-i18n="reloadNotice">Recarregue a página para aplicar.</span> <a href="#" id="reloadLink" data-i18n="reloadButton">Recarregar</a></span>
+  </div>
+
+  <div class="review-card" id="reviewCard">
+    <div data-i18n="reviewPrompt">Enjoying the extension? A 5-star review helps a lot!</div>
+    <div class="review-actions">
+      <a href="https://chromewebstore.google.com/detail/goodbye-youtube-shorts/akcpdnlpamkcmfhblmkdiibipmecieed" target="_blank" rel="noopener" id="reviewLink" data-i18n="reviewCta">Rate on Chrome Web Store</a>
+      <button type="button" class="review-dismiss" id="reviewDismiss" data-i18n="reviewDismiss">Dismiss</button>
+    </div>
   </div>
 
   <div class="footer" id="versionFooter"></div>

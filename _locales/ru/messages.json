@@ -9,5 +9,11 @@
   "error": { "message": "Ошибка" },
   "active": { "message": "Включено" },
   "off": { "message": "Выключено" },
-  "notOnYouTube": { "message": "Не на YouTube" }
+  "notOnYouTube": { "message": "Не на YouTube" },
+  "totalBlockedLabel": { "message": "Заблокировано Shorts" },
+  "tripBlockedLabel": { "message": "Текущий" },
+  "resetTrip": { "message": "Сбросить" },
+  "reviewPrompt": { "message": "Нравится расширение? Оценка в 5 звёзд очень поможет!" },
+  "reviewCta": { "message": "Оценить в Chrome Web Store" },
+  "reviewDismiss": { "message": "Скрыть" }
 }
