@@ -1,0 +1,27 @@
+# Dependências
+node_modules/
+
+# Pacotes gerados da extensão
+*.zip
+*.crx
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.swp
+
+# Ferramentas de agentes de IA / BMad (locais, não fazem parte da extensão)
+.agent/
+.gemini/
+_bmad/
+_bmad-output/
