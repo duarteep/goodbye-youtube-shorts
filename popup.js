@@ -29,6 +29,45 @@ document.addEventListener('DOMContentLoaded', async () => {
   const enabled = result.enabled !== false; // Default true
   toggleInput.checked = enabled;
 
+  // Contadores: total perpétuo (odômetro) e parcial (zerável)
+  const REVIEW_THRESHOLD = 150;
+  const odometer = document.getElementById('odometer');
+  const tripValue = document.getElementById('tripValue');
+  const tripReset = document.getElementById('tripReset');
+  const reviewCard = document.getElementById('reviewCard');
+  const reviewDismiss = document.getElementById('reviewDismiss');
+
+  function renderCounters({ totalBlocked = 0, tripBlocked = 0, reviewDismissed = false }) {
+    const digits = String(totalBlocked).padStart(6, '0').split('');
+    odometer.replaceChildren(...digits.map(d => {
+      const span = document.createElement('span');
+      span.className = 'digit';
+      span.textContent = d;
+      return span;
+    }));
+    tripValue.textContent = String(tripBlocked);
+    reviewCard.classList.toggle('visible', totalBlocked >= REVIEW_THRESHOLD && !reviewDismissed);
+  }
+
+  const counters = await chrome.storage.local.get(['totalBlocked', 'tripBlocked', 'reviewDismissed']);
+  renderCounters(counters);
+
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'local') return;
+    if (changes.totalBlocked || changes.tripBlocked || changes.reviewDismissed) {
+      chrome.storage.local.get(['totalBlocked', 'tripBlocked', 'reviewDismissed']).then(renderCounters);
+    }
+  });
+
+  tripReset.addEventListener('click', () => {
+    chrome.storage.local.set({ tripBlocked: 0 });
+  });
+
+  reviewDismiss.addEventListener('click', () => {
+    chrome.storage.local.set({ reviewDismissed: true });
+  });
+
+
   let currentTab = null;
 
   try {

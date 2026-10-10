@@ -9,5 +9,11 @@
   "error": { "message": "错误" },
   "active": { "message": "已开启" },
   "off": { "message": "已关闭" },
-  "notOnYouTube": { "message": "不在 YouTube 上" }
+  "notOnYouTube": { "message": "不在 YouTube 上" },
+  "totalBlockedLabel": { "message": "已屏蔽的 Shorts" },
+  "tripBlockedLabel": { "message": "本次" },
+  "resetTrip": { "message": "清零" },
+  "reviewPrompt": { "message": "喜欢这个扩展吗？一个五星好评对我们帮助很大！" },
+  "reviewCta": { "message": "在 Chrome 应用商店评分" },
+  "reviewDismiss": { "message": "忽略" }
 }

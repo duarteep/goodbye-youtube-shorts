@@ -9,5 +9,11 @@
   "error": { "message": "Error" },
   "active": { "message": "Active" },
   "off": { "message": "Off" },
-  "notOnYouTube": { "message": "Not on YouTube" }
+  "notOnYouTube": { "message": "Not on YouTube" },
+  "totalBlockedLabel": { "message": "Shorts blocked" },
+  "tripBlockedLabel": { "message": "Session" },
+  "resetTrip": { "message": "Reset" },
+  "reviewPrompt": { "message": "Enjoying the extension? A 5-star review helps a lot!" },
+  "reviewCta": { "message": "Rate on Chrome Web Store" },
+  "reviewDismiss": { "message": "Dismiss" }
 }
