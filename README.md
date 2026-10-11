@@ -145,3 +145,4 @@ Every contribution counts — from reporting a bug to suggesting an improvement.
 ## 📄 License
 
 MIT
+
