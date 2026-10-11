@@ -38,10 +38,39 @@ function addToCount(n) {
 // Quantos Shorts um elemento removido representa
 function countShortsIn(item) {
   const tag = item.tagName.toLowerCase();
-  if (tag === 'ytd-reel-item-renderer') return 1;
-  const nested = item.querySelectorAll('ytd-reel-item-renderer, ytm-shorts-lockup-view-model').length;
-  if (tag === 'ytd-reel-shelf-renderer') return Math.max(1, nested);
-  return nested; // ytd-rich-section-renderer sem Shorts dentro não conta
+  if (tag === 'ytd-reel-item-renderer' || tag === 'yt-shorts-lockup-view-model' || tag === 'ytm-shorts-lockup-view-model') {
+    return 1;
+  }
+
+  // Coleta IDs únicos de links /shorts/<id> dentro do container
+  const uniqueShorts = new Set();
+  item.querySelectorAll('a[href*="/shorts/"]').forEach(a => {
+    const match = a.href.match(/\/shorts\/([a-zA-Z0-9_-]+)/);
+    if (match) uniqueShorts.add(match[1]);
+  });
+
+  const nested = item.querySelectorAll('ytd-reel-item-renderer, yt-shorts-lockup-view-model, ytm-shorts-lockup-view-model').length;
+  const detectedCount = Math.max(uniqueShorts.size, nested);
+
+  if (tag === 'ytd-reel-shelf-renderer') {
+    return Math.max(1, detectedCount);
+  }
+
+  // Para seções na tela inicial (ytd-rich-section-renderer)
+  if (detectedCount > 0) {
+    return detectedCount;
+  }
+
+  // Verifica se o container é uma estante de Shorts pelo título ou atributo
+  const isShortsShelf = item.querySelector('ytd-rich-shelf-renderer[is-shorts]') ||
+    Array.from(item.querySelectorAll('#title, #title-text, yt-formatted-string.title, yt-formatted-string#title'))
+      .some(el => el.textContent && el.textContent.trim().toLowerCase() === 'shorts');
+
+  if (isShortsShelf) {
+    return 1;
+  }
+
+  return 0;
 }
 
 document.addEventListener('visibilitychange', () => {
@@ -75,7 +104,9 @@ function removeShortsSidebar() {
 
 // Remove Shorts suggestions from homepage
 function removeShortsSuggestions() {
-  const items = document.querySelectorAll('ytd-rich-section-renderer, ytd-reel-shelf-renderer, ytd-reel-item-renderer');
+  const items = document.querySelectorAll(
+    'ytd-rich-section-renderer, ytd-reel-shelf-renderer, ytd-reel-item-renderer, yt-shorts-lockup-view-model'
+  );
   items.forEach(item => {
     // Já removido junto com um contêiner pai (evita contar duas vezes)
     if (!item.isConnected) return;
