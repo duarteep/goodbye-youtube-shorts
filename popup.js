@@ -29,23 +29,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const enabled = result.enabled !== false; // Default true
   toggleInput.checked = enabled;
 
-  // Contadores: total perpétuo (odômetro) e parcial (zerável)
+  // Contadores: total perpétuo e parcial (zerável)
   const REVIEW_THRESHOLD = 150;
-  const odometer = document.getElementById('odometer');
+  const totalBlockedValue = document.getElementById('totalBlockedValue');
   const tripValue = document.getElementById('tripValue');
   const tripReset = document.getElementById('tripReset');
   const reviewCard = document.getElementById('reviewCard');
   const reviewDismiss = document.getElementById('reviewDismiss');
 
   function renderCounters({ totalBlocked = 0, tripBlocked = 0, reviewDismissed = false }) {
-    const digits = String(totalBlocked).padStart(6, '0').split('');
-    odometer.replaceChildren(...digits.map(d => {
-      const span = document.createElement('span');
-      span.className = 'digit';
-      span.textContent = d;
-      return span;
-    }));
-    tripValue.textContent = String(tripBlocked);
+    if (totalBlockedValue) {
+      totalBlockedValue.textContent = Number(totalBlocked).toLocaleString();
+    }
+    if (tripValue) {
+      tripValue.textContent = Number(tripBlocked).toLocaleString();
+    }
     reviewCard.classList.toggle('visible', totalBlocked >= REVIEW_THRESHOLD && !reviewDismissed);
   }
 
